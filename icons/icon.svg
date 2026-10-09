@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#0f766e"/>
+  <g fill="#ffffff" opacity="0.16">
+    <rect x="72" y="332" width="64" height="56" rx="12"/><rect x="152" y="332" width="64" height="56" rx="12"/>
+    <rect x="232" y="332" width="64" height="56" rx="12"/><rect x="312" y="332" width="64" height="56" rx="12"/>
+    <rect x="392" y="332" width="48" height="56" rx="12"/><rect x="132" y="404" width="248" height="40" rx="12"/>
+  </g>
+  <text x="256" y="300" text-anchor="middle" font-family="'Noto Naskh Arabic','Geeza Pro','Traditional Arabic',serif" font-size="260" fill="#ffffff">ك</text>
+</svg>

@@ -1,0 +1,13 @@
+{
+  "name": "Katib — Arabic Touch Typing",
+  "short_name": "Katib",
+  "description": "Learn the Arabic keyboard and touch typing, with full diacritics.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f4ef",
+  "theme_color": "#0f766e",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
