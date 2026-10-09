@@ -23,7 +23,11 @@ const LESSON_DEFS = [
   { id: 'hamza', title: 'Hamza, madda & special letters', tip: 'Hamza has several seats: on alif (أ إ), on waw (ؤ), on ya (ئ) and on its own (ء).', chars: ['أ', 'إ', 'آ', 'ؤ', 'ئ', 'ء', 'ى', 'ة'] },
   { id: 'lam-alif', title: 'Lam-alif', tip: 'Lam followed by alif joins into a special shape. Your layout has a dedicated key for it — or type ل then ا.', chars: ['لا', 'لأ', 'لإ', 'لآ'] },
   { id: 'punctuation', title: 'Punctuation', tip: 'Arabic uses its own comma ، semicolon ؛ and question mark ؟.', chars: ['،', '؛', '؟', '.', '!', ':', '"', '(', ')'] },
-  { id: 'numbers', title: 'Numbers', tip: 'Reach up from the home row; each finger takes the digits above its column.', chars: [DIGITS_TOKEN] },
+  {
+    id: 'numbers', title: 'Numbers', tip: 'Reach up from the home row; each finger takes the digits above its column.', chars: [DIGITS_TOKEN],
+    // {n} is replaced by the digit n as the current layout types it.
+    note: '<b>Numbers run left to right.</b> Arabic text goes right to left, but numbers inside it are written left to right, just like in English. Type a number in the order you read it: for <bdi dir="ltr">{1}{2}{3}</bdi>, type {1}, then {2}, then {3}. So at each new number the cursor jumps to its <b>left</b> end and moves rightward.',
+  },
   { id: 'sentences', title: 'Real sentences', tip: 'Everything together: full, vowelized sentences from proverbs and hadith.', review: true, sentences: true },
 ];
 
@@ -122,9 +126,10 @@ function lessonText(lesson) {
   if (lesson.id === 'numbers') {
     const groups = [];
     for (let i = 0; i < 14; i++) {
-      let g = '';
+      const nonZero = fresh.filter(d => d !== '0' && d !== '٠');
+      let g = pick(nonZero); // real numbers don't start with zero
       const len = 2 + Math.floor(Math.random() * 3);
-      for (let j = 0; j < len; j++) g += pick(fresh);
+      for (let j = 1; j < len; j++) g += pick(fresh);
       groups.push(g);
     }
     const words = eligibleWords(learned, true);

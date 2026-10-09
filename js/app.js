@@ -169,7 +169,8 @@ $('#btn-continue').addEventListener('click', () => startLesson(nextLessonIndex()
 
 function startLesson(i) {
   const l = lessons[i];
-  startSession({ kind: 'lesson', lessonIndex: i, kicker: `Lesson ${l.number} of ${lessons.length}`, title: l.title, tip: l.tip });
+  const note = l.note && l.note.replace(/\{(\d)\}/g, (_, d) => esc(layout.keys[`Digit${d}`][0]));
+  startSession({ kind: 'lesson', lessonIndex: i, kicker: `Lesson ${l.number} of ${lessons.length}`, title: l.title, tip: l.tip, note });
 }
 
 // ---------------------------------------------------------------- practice view
@@ -284,6 +285,8 @@ function startSession(spec, keepText) {
   $('#type-title').textContent = spec.title || '';
   const credit = spec.credit ? (spec.creditUrl ? `<a href="${spec.creditUrl}" target="_blank" rel="noopener">${esc(spec.credit)}</a>` : esc(spec.credit)) : (spec.tip ? esc(spec.tip) : '');
   $('#type-credit').innerHTML = credit;
+  $('#lesson-note').innerHTML = spec.note || '';
+  $('#lesson-note').hidden = !spec.note;
   $('#results').hidden = true;
   $('.type-card').classList.remove('show-results');
   renderText();
@@ -388,7 +391,15 @@ function renderHint() {
   const how = info.shift
     ? `<kbd>Shift</kbd> with your ${FINGER_NAMES[FINGER_OF[shiftFor(info.code)]].toLowerCase()}, then <kbd>${esc(latinLabel(info.code))}</kbd> with your ${FINGER_NAMES[finger].toLowerCase()}`
     : `<kbd>${esc(keyName(info))}</kbd> · ${FINGER_NAMES[finger]}`;
-  hint.innerHTML = `<div class="hint-glyph f-${finger}" lang="ar">${esc(glyph)}</div><div class="hint-text">${name ? `<div>${name}</div>` : ''}<div>${how}</div></div>`;
+  const cue = startsNumber() ? '<div class="hint-cue">← Numbers run left to right: start at the left end of the number</div>' : '';
+  hint.innerHTML = `<div class="hint-glyph f-${finger}" lang="ar">${esc(glyph)}</div><div class="hint-text">${name ? `<div>${name}</div>` : ''}<div>${how}</div>${cue}</div>`;
+}
+
+/** True when the cursor sits on the first digit of a number with two or more digits. */
+function startsNumber() {
+  const isDigit = c => c && !c.skip && /^[0-9٠-٩]$/.test(c.base);
+  const i = session.index;
+  return !session.baseDone && isDigit(session.clusters[i]) && !isDigit(session.clusters[i - 1]) && isDigit(session.clusters[i + 1]);
 }
 
 function flashError() {
